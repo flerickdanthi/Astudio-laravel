@@ -1,67 +1,138 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+Prerequisites:
+* Homebrew installed (if not, follow Homebrew installation guide).
+* PHP 8.3.17 installed.
+* MySQL  (or any other DB supported by Laravel).
+* Composer installed.
+* 
+Steps to Set Up Laravel with Passport Authentication
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Step 1: Install Dependencies Using Homebrew
+First, make sure your environment is set up correctly.
+Install PHP (if needed):
+If PHP isn't installed or you need to upgrade PHP to version 8.3, you can do so with Homebrew:
 
-## About Laravel
+brew install php@8.3
+brew link --overwrite --force php@8.3
+Install Composer:
+To manage PHP dependencies, you'll need Composer. If Composer isn't installed, you can install it via Homebrew:
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+brew install composer
+Install MySQL:
+If you plan to use MySQL as your database:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+brew install mysql
+brew services start mysql
+This will install and start MySQL as a background service
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+brew install node
 
-## Learning Laravel
+Step 2: clone  Laravel Project 
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+https://github.com/flerickdanthi/Astudio-laravel.git
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+cd <your-cloned-repository>
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Step 3: Install Laravel Passport
+Install Passport via Composer:
+To install Passport, run the following:
 
-## Laravel Sponsors
+composer require laravel/passport
+Run Passport Migrations:
+Passport needs a few database tables. Publish the necessary Passport migration files:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
 
-### Premium Partners
+php artisan migrate
+Publish Passport Assets:
+You also need to publish the Passport configuration file:
+bash
+Copy
+php artisan passport:install
+This command will generate the encryption keys needed for Passport and create personal access and password grant clients.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+Step 4: Configure Laravel Passport
+Set up .env file:
+Add Passport-related environment variables in the .env file. Make sure to set the appropriate database connection for DB_ variables.
+env
+Copy
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=your_db_name
+DB_USERNAME=your_db_user
+DB_PASSWORD=your_db_password
 
-## Contributing
+APP_KEY=base64:your-app-key
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Update config/auth.php:
 
-## Code of Conduct
+In the config/auth.php file, set the driver for API authentication to passport:
+php
+Copy
+'guards' => [
+    'web' => [
+        'driver' => 'session',
+        'provider' => 'users',
+    ],
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+    'api' => [
+        'driver' => 'passport',
+        'provider' => 'users',
+    ],
+],
 
-## Security Vulnerabilities
+'providers' => [
+    'users' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\User::class,
+    ],
+],
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Add Passport service provider:
+Open config/app.php and add the Passport service provider to the providers array:
+php
+Copy
+'providers' => [
+    // Other providers...
+    Laravel\Passport\PassportServiceProvider::class,
+],
 
-## License
+php artisan migrate
+php artisan db:seed
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-# Astudio-laravel
+
+Step 5: Set Up Passport Routes and Middleware
+In app/Providers/AuthServiceProvider.php, you need to include Passport's routes within the boot method:
+php
+Copy
+use Laravel\Passport\Passport;
+
+public function boot()
+{
+    $this->registerPolicies();
+    Passport::routes();
+}
+Then, ensure the Passport middleware is available in the api middleware group in app/Http/Kernel.php:
+php
+
+
+'api' => [
+    \Laravel\Passport\Http\Middleware\CreateFreshApiToken::class,
+],
+
+Step 6: Generate Passport Keys (If Not Done Yet)
+If you haven’t already generated the Passport encryption keys, run the following command to generate them:
+bash
+Copy
+php artisan passport:install
+
+
+Php artisan migrate
+Php artisan db:seed
+
+Composer dump-autoload
+
+Run these commands:
+
+php artisan config:cache                                    
+php artisan cache:clear
+php artisan optimize
