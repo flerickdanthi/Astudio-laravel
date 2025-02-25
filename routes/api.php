@@ -41,7 +41,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('users', [UserController::class, 'index']);  // Get all users
     Route::get('users/{id}', [UserController::class, 'show']);  // Get a user by ID
     Route::delete('users/{id}', [UserController::class, 'destroy']);  // Delete user
-    Route::get('users/test/{id}',[UserController::class, 'getUserData']);
+    Route::get('users-data/{id}',[UserController::class, 'getUserData']);
 
     // Project Routes
     Route::get('projects/{id}', [ProjectController::class, 'show']);  // Get a project by ID

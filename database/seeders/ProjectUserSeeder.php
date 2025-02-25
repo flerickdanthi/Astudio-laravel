@@ -11,16 +11,16 @@ class ProjectUserSeeder extends Seeder
     {
         $userProjects = [
             [
-                'user_id' => 1,  // John Doe
-                'projects' => [1, 2],  // Assign John to Project A and Project B
+                'user_id' => 1,  
+                'projects' => [1, 2],  
                 'created_at '=>'',
                 'upadted_at '=>'',
             ],
             [
-                'user_id' => 2,  // Jane Smith
+                'user_id' => 2,  
                 'projects' => [1],
                 'created_at '=>'',
-                'upadted_at '=>'',  // Assign Jane to Project A only
+                'upadted_at '=>'',
             ],
         ];
 

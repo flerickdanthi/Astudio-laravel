@@ -25,8 +25,8 @@ class UserSeeder extends Seeder
 
         foreach ($users as $user) {
             User::updateOrCreate(
-                ['email' => $user['email']],  // Check if a user with this email exists
-                $user  // Use the data to create or update
+                ['email' => $user['email']], 
+                $user 
             );
         }
     }

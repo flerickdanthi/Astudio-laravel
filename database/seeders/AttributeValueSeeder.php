@@ -10,13 +10,13 @@ class AttributeValueSeeder extends Seeder
     {
         $attributeValues = [
             [
-                'attribute_id' => 1,  // Assuming attribute_id 1 is "Department"
-                'entity_id' => 1,  // Assuming entity_id 1 is Project A
+                'attribute_id' => 1,  
+                'entity_id' => 1, 
                 'value' => 'IT',
             ],
             [
-                'attribute_id' => 2,  // Assuming attribute_id 2 is "Start Date"
-                'entity_id' => 1,  // Assuming entity_id 1 is Project A
+                'attribute_id' => 2,  
+                'entity_id' => 1, 
                 'value' => '2025-02-01',
             ],
         ];

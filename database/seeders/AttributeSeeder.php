@@ -22,8 +22,8 @@ class AttributeSeeder extends Seeder
 
         foreach ($attributes as $attribute) {
             Attribute::updateOrCreate(
-                ['name' => $attribute['name']],  // Check if an attribute with this name exists
-                $attribute  // Use the data to create or update
+                ['name' => $attribute['name']],  
+                $attribute 
             );
         }
     }
