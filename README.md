@@ -3,7 +3,7 @@ Prerequisites:
 * PHP 8.3.17 installed.
 * MySQL  (or any other DB supported by Laravel).
 * Composer installed.
-* 
+  
 Steps to Set Up Laravel with Passport Authentication
 
 Step 1: Install Dependencies Using Homebrew
@@ -44,16 +44,14 @@ Passport needs a few database tables. Publish the necessary Passport migration f
 php artisan migrate
 Publish Passport Assets:
 You also need to publish the Passport configuration file:
-bash
-Copy
+
 php artisan passport:install
 This command will generate the encryption keys needed for Passport and create personal access and password grant clients.
 
 Step 4: Configure Laravel Passport
 Set up .env file:
 Add Passport-related environment variables in the .env file. Make sure to set the appropriate database connection for DB_ variables.
-env
-Copy
+
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
@@ -66,8 +64,7 @@ APP_KEY=base64:your-app-key
 Update config/auth.php:
 
 In the config/auth.php file, set the driver for API authentication to passport:
-php
-Copy
+
 'guards' => [
     'web' => [
         'driver' => 'session',
@@ -89,8 +86,7 @@ Copy
 
 Add Passport service provider:
 Open config/app.php and add the Passport service provider to the providers array:
-php
-Copy
+
 'providers' => [
     // Other providers...
     Laravel\Passport\PassportServiceProvider::class,
@@ -102,8 +98,7 @@ php artisan db:seed
 
 Step 5: Set Up Passport Routes and Middleware
 In app/Providers/AuthServiceProvider.php, you need to include Passport's routes within the boot method:
-php
-Copy
+
 use Laravel\Passport\Passport;
 
 public function boot()
@@ -121,8 +116,7 @@ php
 
 Step 6: Generate Passport Keys (If Not Done Yet)
 If you haven’t already generated the Passport encryption keys, run the following command to generate them:
-bash
-Copy
+
 php artisan passport:install
 
 
